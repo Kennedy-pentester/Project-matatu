@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h1>Welcome to Mathree Management</h1>
+
+        <button onclick="logout()">Logout</button>
+
+        <!-- Matatu List -->
+        <h2>Matatu Fleet</h2>
+        <div id="matatu-list">
+            <!-- Matatu details will be added dynamically -->
+        </div>
+
+        <!-- Booking Table -->
+        <h2>Bookings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Matatu</th>
+                    <th>Passenger</th>
+                    <th>Seats</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="booking-list"></tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
