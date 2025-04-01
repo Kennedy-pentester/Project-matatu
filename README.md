@@ -1,108 +1,73 @@
-# Project Matatu
+# Matatu Owner Business Management System
 
-This is a web application built using Django for managing matatu (public transport) bookings. The app allows users to view available bookings, manage their dashboard, and interact with matatu services.
+## Overview
+
+The Matatu Owner Business Management System is a comprehensive software solution designed to streamline and optimize the operations of matatu businesses. It facilitates efficient fleet management, including scheduling, route planning, and vehicle maintenance tracking. The system also supports financial management with automated fare collection, expense tracking, and revenue reporting, along with driver management and customer service features.
 
 ## Features
 
-- **Dashboard**: View an overview of your bookings and matatu status.
-- **Bookings**: Make and manage bookings for matatus.
-- **Index Page**: A simple homepage to navigate through the app.
+- **Fleet Management**: Schedule management, route planning, vehicle maintenance tracking.
+- **Financial Management**: Automated fare collection, expense tracking, revenue reporting.
+- **Driver Management**: Performance monitoring, shift assignment, compliance tracking.
+- **Customer Service**: Passenger feedback management, service quality assurance.
 
-## Setup Instructions
-
-Follow the steps below to set up and run the app locally.
+## Installation
 
 ### Prerequisites
 
-Before you begin, ensure that you have the following installed on your system:
+- Python 3.12+
+- Django 5.1.7
+- Virtual Environment (recommended)
 
-- Python 3.12 or higher
-- Virtual environment tool (`venv`)
-- Git (for version control)
+### Setup
 
-### 1. Clone the repository
+1. **Clone the Repository**
+   ```sh
+   git clone <repository-url>
+   cd Project-matatu
+   ```
+2. **Create and Activate Virtual Environment**
+   ```sh
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. **Install Dependencies**
+   ```sh
+   pip install -r requirements.txt
+   ```
+4. **Apply Migrations**
+   ```sh
+   python manage.py migrate
+   ```
+5. **Run the Server**
+   ```sh
+   python manage.py runserver
+   ```
 
-```bash
-git clone https://github.com/yourusername/project-matatu.git
-cd project-matatu
+## Usage
+
+- Access the system at `http://localhost:8000/`
+- Login or register as needed
+- Use the dashboard to manage matatu operations
+
+## Project Structure
+
 ```
-
-### 2. Set up a virtual environment
-
-Create a virtual environment using `venv`:
-
-```bash
-python3 -m venv venv
-```
-
-Activate the virtual environment:
-
-- **On macOS/Linux**:
-
-```bash
-source venv/bin/activate
-```
-
-- **On Windows**:
-
-```bash
-venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-With the virtual environment activated, install the required dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the application
-
-Once all dependencies are installed, run the Django development server:
-
-```bash
-python manage.py runserver
-```
-
-This will start the server on `http://localhost:8000`.
-
-### 5. Access the app
-
-Open your browser and go to `http://localhost:8000` to interact with the application.
-
-## Django Admin
-
-You can also access the Django admin dashboard by going to `http://localhost:8000/admin/`. Use the superuser credentials to log in.
-
-### 6. Create a superuser
-
-To create a superuser (admin), run the following command:
-
-```bash
-python manage.py createsuperuser
-```
-
-Follow the prompts to set the username, email, and password for the superuser.
-
-### 7. Database
-
-The app uses an SQLite database by default. The database will be automatically created when you run the server.
-
-To apply any database migrations, run:
-
-```bash
-python manage.py migrate
-```
-
-## Running Tests
-
-To run the app's tests, use the following command:
-
-```bash
-python manage.py test
+Project-matatu/
+│── matatu/        # Django project folder
+│   ├── core/      # Main application
+│   ├── templates/ # HTML templates
+│   ├── static/    # Static files (CSS, JS, images)
+│   ├── manage.py  # Django management script
+│── requirements.txt  # Project dependencies
+│── README.md      # Documentation
+│── .gitignore     # Git ignore rules
 ```
 
 ## Contributing
 
-Feel free to fork this project and submit pull requests. Please make sure to follow the existing code structure and guidelines.
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Commit changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature-branch`)
+5. Create a Pull Request
