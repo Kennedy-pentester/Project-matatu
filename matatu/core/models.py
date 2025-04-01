@@ -28,7 +28,7 @@ class Matatu(models.Model):
     name = models.CharField(max_length=100)
     registration_number = models.CharField(max_length=20, unique=True)
     capacity = models.IntegerField()
-    maintenance_schedule = models.DateField()
+    maintenance_schedule = models.TextField(null=True, blank=True)
     last_serviced = models.DateField()
 
     def __str__(self):
@@ -37,7 +37,7 @@ class Matatu(models.Model):
 
 # Driver Model
 class Driver(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="driver")
     matatu = models.ForeignKey(Matatu, on_delete=models.SET_NULL, null=True)
     shift_start = models.TimeField()
     shift_end = models.TimeField()
@@ -49,7 +49,7 @@ class Driver(models.Model):
 
 # Touts Model
 class Tout(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="tout")
     matatu = models.ForeignKey(Matatu, on_delete=models.SET_NULL, null=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
 
