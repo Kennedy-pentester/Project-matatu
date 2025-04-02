@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+  {% comment %} sidebar {% endcomment %}
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'matatu_list' %}">Manage Matatus</a></li>
+      <li><a href="{% url 'driver_list' %}">Manage Drivers</a></li>
+      <li><a href="{% url 'tout_list' %}" class="active">Manage Touts</a></li>
+      <li><a href="{% url 'shift_list' %}">Manage Shifts</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+  </aside>
+
+  {% comment %} main content {% endcomment %}
+  <div class="dashboard-content">
+    <h2>Tout List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>License Number</th>
+          <th>Assigned Matatu</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if touts %}
+          {% for tout in touts %}
+          <tr>
+            <td>{{ tout.user.username }}</td>
+            <td>{{ tout.license_number }}</td>
+            <td>
+              {% if tout.assigned_matatu %}
+                {{ tout.assigned_matatu.plate_number }}
+              {% else %}
+                No Matatu
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="3">No touts found.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
