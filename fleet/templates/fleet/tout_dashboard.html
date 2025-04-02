@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block content %}
+<div class="dashboard">
+  <aside class="sidebar">
+    <h2>Tout Panel</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Passenger Count</a></li>
+      <li><a href="#">Earnings</a></li>
+      <li><a href="#">Profile</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+  </aside>
+
+  <div class="dashboard-content">
+    <h2>Welcome, {{ tout.user.username }}!</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Today's Collection</h3>
+        <p>7,800</p>
+      </div>
+      <div class="card">
+        <h3>Passengers Boarded</h3>
+        <p>50</p>
+      </div>
+      <div class="card">
+        <h3>Assigned Vehicle:</h3>
+        <p>{{ tout.assigned_matatu.plate_number|default:"Not assigned" }}</p>
+      </div>
+      <div class="card">
+        <h3>Your Shifts:</h3>
+        <ul>
+          {% for shift in shifts %}
+          <li>
+            {{ shift.shift_type }} ({{ shift.start_time }} - {{ shift.end_time
+            }})
+          </li>
+          {% empty %}
+          <li>No shifts assigned</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

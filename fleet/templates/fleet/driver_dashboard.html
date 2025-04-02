@@ -1,0 +1,50 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="dashboard">
+  <aside class="sidebar">
+    <h2>Driver Panel</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Trips</a></li>
+      <li><a href="#">Earnings</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="dashboard-content">
+      <h2>Welcome, {{ driver.user.username }}!</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Today's Earnings</h3>
+          <p>KES 5000</p>
+        </div>
+        <div class="card">
+          <h3>Completed Trips</h3>
+          <p>12</p>
+        </div>
+        <div class="card">
+          <h3>Assigned Vehicle</h3>
+          <p>
+            {% if driver.assigned_matatu %} 
+              {{ driver.assigned_matatu.plate_number }} 
+            {% else %} 
+              Not assigned 
+            {% endif %}
+          </p>
+        </div>
+        <div class="card">
+          <h3>Your Shifts</h3>
+          <ul>
+            {% for shift in shifts %}
+              <li>{{ shift.shift_type }} ({{ shift.start_time }} - {{ shift.end_time }})</li>
+            {% empty %}
+              <li>No shifts assigned.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

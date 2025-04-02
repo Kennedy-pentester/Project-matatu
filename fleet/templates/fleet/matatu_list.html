@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'matatu_list' %}" class="active">Manage Matatus</a></li>
+            <li><a href="{% url 'driver_list' %}">Manage Drivers</a></li>
+            <li><a href="{% url 'tout_list' %}">Manage Touts</a></li>
+            <li><a href="{% url 'shift_list' %}">Manage Shifts</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+        <h2>Matatu List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Plate Number</th>
+                    <th>Capacity</th>
+                    <th>Route</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for matatu in matatus %}
+                <tr>
+                    <td>{{ matatu.plate_number }}</td>
+                    <td>{{ matatu.capacity }}</td>
+                    <td>{{ matatu.route }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No matatus found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
