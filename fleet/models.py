@@ -52,3 +52,25 @@ class Shift(models.Model):
 
     def __str__(self):
         return f"{self.matatu} - {self.shift_type}"
+
+
+# fare collection model
+class Fare(models.Model):
+    shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
+    amount_collected = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.shift} - KES {self.amount_collected}"
+
+
+# activity log model
+class Activity(models.Model):
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE
+    )  # Who triggered the activity
+
+    def __str__(self):
+        return f"{self.message} at {self.created_at}"

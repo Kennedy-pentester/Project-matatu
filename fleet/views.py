@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Matatu, Driver, Tout, Shift
+from .models import Matatu, Driver, Tout, Shift, Fare, Activity
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginForm
+from .forms import LoginForm, FareForm
 from django.contrib.auth.models import Group
+from datetime import datetime
+from django.db.models import Sum
 
 
 def login_view(request):
@@ -74,12 +76,22 @@ def tout_dashboard(request):
         tout = Tout.objects.get(user=request.user)
         shifts = Shift.objects.filter(tout=tout)
 
+        # Calculate today's fare collection for the Tout
+        today_fares = Fare.objects.filter(
+            shift__tout=tout, timestamp__date=datetime.today().date()
+        )
+        total_fare = (
+            today_fares.aggregate(Sum("amount_collected"))["amount_collected__sum"] or 0
+        )
+
         print(f"DEBUG: Logged-in Tout: {tout.user.username}")
         print(f"DEBUG: Assigned Shifts: {shifts}")
+        print(f"DEBUG: Today's Total Fare: {total_fare}")
 
         context = {
             "tout": tout,
             "shifts": shifts,
+            "total_fare": total_fare,
         }
         return render(request, "fleet/tout_dashboard.html", context)
 
@@ -114,11 +126,8 @@ def admin_dashboard(request):
     total_touts = Tout.objects.count()
     total_shifts = Shift.objects.count()
 
-    recent_activities = [
-        "New matatu added: ABC123",
-        "Driver assigned to matatu XYZ456",
-        "Shift updated for Tout John Doe",
-    ]
+    #    fecth recent activities
+    recent_activities = Activity.objects.order_by("-created_at")[:5]
 
     context = {
         "total_matatus": total_matatus,
@@ -158,3 +167,37 @@ def shift_list(request):
     shifts = Shift.objects.all()
     context = {"shifts": shifts}
     return render(request, "fleet/shift_list.html", context)
+
+
+# fare collection view for Touts
+@login_required
+def log_fare(request):
+    tout = Tout.objects.get(user=request.user)
+
+    if request.method == "POST":
+        form = FareForm(request.POST)
+        form.fields["shift"].queryset = Shift.objects.filter(tout=tout)
+
+        if form.is_valid():
+            fare = form.save(commit=False)
+            fare.tout = tout
+            fare.save()
+
+            # Log activity
+            log_activity(
+                request.user,
+                f"{request.user.username} logged a fare of KES {fare.amount_collected}.",
+            )
+
+            messages.success(request, "Fare logged successfully.")
+            return redirect("tout_dashboard")
+    else:
+        form = FareForm()
+        form.fields["shift"].queryset = Shift.objects.filter(tout=tout)
+
+    return render(request, "fleet/log_fare.html", {"form": form})
+
+
+# activity log
+def log_activity(user, message):
+    Activity.objects.create(user=user, message=message)
