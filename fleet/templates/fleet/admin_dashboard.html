@@ -1,11 +1,6 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'fleet/admin.css' %}">
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'fleet/admin.css' %}" />
+{% endblock %} {% block content %}
 <div class="dashboard">
   <aside class="sidebar">
     <h2>Admin Panel</h2>
@@ -47,7 +42,9 @@
       <h3>Recent Activity</h3>
       <ul>
         {% for activity in recent_activities %}
-        <li>{{ activity }}</li>
+        <li>
+          {{ activity.message }} ({{ activity.created_at|date:"Y-m-d H:i" }})
+        </li>
         {% empty %}
         <li>No recent activity.</li>
         {% endfor %}

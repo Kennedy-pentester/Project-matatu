@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Matatu, Driver, Tout, Shift, Fare
+from .models import Matatu, Driver, Tout, Shift, Fare, Activity
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -126,11 +126,8 @@ def admin_dashboard(request):
     total_touts = Tout.objects.count()
     total_shifts = Shift.objects.count()
 
-    recent_activities = [
-        "New matatu added: ABC123",
-        "Driver assigned to matatu XYZ456",
-        "Shift updated for Tout John Doe",
-    ]
+    #    fecth recent activities
+    recent_activities = Activity.objects.order_by("-created_at")[:5]
 
     context = {
         "total_matatus": total_matatus,
@@ -172,7 +169,7 @@ def shift_list(request):
     return render(request, "fleet/shift_list.html", context)
 
 
-# fare
+# fare collection view for Touts
 @login_required
 def log_fare(request):
     tout = Tout.objects.get(user=request.user)
@@ -185,6 +182,13 @@ def log_fare(request):
             fare = form.save(commit=False)
             fare.tout = tout
             fare.save()
+
+            # Log activity
+            log_activity(
+                request.user,
+                f"{request.user.username} logged a fare of KES {fare.amount_collected}.",
+            )
+
             messages.success(request, "Fare logged successfully.")
             return redirect("tout_dashboard")
     else:
@@ -192,3 +196,8 @@ def log_fare(request):
         form.fields["shift"].queryset = Shift.objects.filter(tout=tout)
 
     return render(request, "fleet/log_fare.html", {"form": form})
+
+
+# activity log
+def log_activity(user, message):
+    Activity.objects.create(user=user, message=message)

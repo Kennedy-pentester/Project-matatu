@@ -62,3 +62,15 @@ class Fare(models.Model):
 
     def __str__(self):
         return f"{self.shift} - KES {self.amount_collected}"
+
+
+# activity log model
+class Activity(models.Model):
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE
+    )  # Who triggered the activity
+
+    def __str__(self):
+        return f"{self.message} at {self.created_at}"
