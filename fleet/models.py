@@ -54,11 +54,3 @@ class Shift(models.Model):
         return f"{self.matatu} - {self.shift_type}"
 
 
-# fare collection model
-class Fare(models.Model):
-    shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
-    amount_collected = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.shift} - KES {self.amount_collected}"
