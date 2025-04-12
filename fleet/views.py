@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import LoginForm, FareForm
 from django.contrib.auth.models import Group
+from datetime import datetime
+from django.db.models import Sum
 
 
 def login_view(request):
@@ -74,12 +76,22 @@ def tout_dashboard(request):
         tout = Tout.objects.get(user=request.user)
         shifts = Shift.objects.filter(tout=tout)
 
+        # Calculate today's fare collection for the Tout
+        today_fares = Fare.objects.filter(
+            shift__tout=tout, timestamp__date=datetime.today().date()
+        )
+        total_fare = (
+            today_fares.aggregate(Sum("amount_collected"))["amount_collected__sum"] or 0
+        )
+
         print(f"DEBUG: Logged-in Tout: {tout.user.username}")
         print(f"DEBUG: Assigned Shifts: {shifts}")
+        print(f"DEBUG: Today's Total Fare: {total_fare}")
 
         context = {
             "tout": tout,
             "shifts": shifts,
+            "total_fare": total_fare,
         }
         return render(request, "fleet/tout_dashboard.html", context)
 
