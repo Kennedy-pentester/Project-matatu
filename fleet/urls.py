@@ -10,6 +10,7 @@ from .views import (
     driver_list,
     tout_list,
     shift_list,
+    log_fare,  # Add this import
 )
 
 urlpatterns = [
@@ -19,13 +20,13 @@ urlpatterns = [
     # Dashboards
     path("driver/dashboard/", driver_dashboard, name="driver_dashboard"),
     path("tout/dashboard/", tout_dashboard, name="tout_dashboard"),
-    path(
-        "owner/dashboard/", admin_dashboard, name="admin_dashboard"
-    ),  # Changed from "dashboard/" to avoid conflict
+    path("owner/dashboard/", admin_dashboard, name="admin_dashboard"),
     path("redirect_dashboard/", redirect_dashboard, name="redirect_dashboard"),
     # Admin Management
     path("matatu/list/", matatu_list, name="matatu_list"),
     path("driver/list/", driver_list, name="driver_list"),
     path("tout/list/", tout_list, name="tout_list"),
     path("shift/list/", shift_list, name="shift_list"),
+    # Fare Logging
+    path("fleet/tout/log_fare/", log_fare, name="log_fare"),  # Add this line
 ]

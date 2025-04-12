@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Matatu, Driver, Tout, Shift
+from .models import Matatu, Driver, Tout, Shift, Fare
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginForm
+from .forms import LoginForm, FareForm
 from django.contrib.auth.models import Group
 
 
@@ -158,3 +158,25 @@ def shift_list(request):
     shifts = Shift.objects.all()
     context = {"shifts": shifts}
     return render(request, "fleet/shift_list.html", context)
+
+
+# fare
+@login_required
+def log_fare(request):
+    tout = Tout.objects.get(user=request.user)
+
+    if request.method == "POST":
+        form = FareForm(request.POST)
+        form.fields["shift"].queryset = Shift.objects.filter(tout=tout)
+
+        if form.is_valid():
+            fare = form.save(commit=False)
+            fare.tout = tout
+            fare.save()
+            messages.success(request, "Fare logged successfully.")
+            return redirect("tout_dashboard")
+    else:
+        form = FareForm()
+        form.fields["shift"].queryset = Shift.objects.filter(tout=tout)
+
+    return render(request, "fleet/log_fare.html", {"form": form})

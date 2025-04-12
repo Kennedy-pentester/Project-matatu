@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+
+{% block content %}
 <div class="dashboard">
   <aside class="sidebar">
     <h2>Tout Panel</h2>
@@ -16,7 +18,7 @@
     <div class="cards">
       <div class="card">
         <h3>Today's Collection</h3>
-        <p>7,800</p>
+        <p>7,800</p> <!-- You can dynamically calculate this if needed -->
       </div>
       <div class="card">
         <h3>Passengers Boarded</h3>
@@ -31,14 +33,23 @@
         <ul>
           {% for shift in shifts %}
           <li>
-            {{ shift.shift_type }} ({{ shift.start_time }} - {{ shift.end_time
-            }})
+            {{ shift.shift_type }} ({{ shift.start_time }} - {{ shift.end_time }})
           </li>
           {% empty %}
           <li>No shifts assigned</li>
           {% endfor %}
         </ul>
       </div>
+    </div>
+
+    <!-- Fare Collection Form -->
+    <div class="fare-collection">
+      <h3>Log Fare Collection</h3>
+      <form method="post" action="{% url 'log_fare' %}">
+        {% csrf_token %}
+        {{ form.as_p }} <!-- This renders the form fields -->
+        <button type="submit" class="btn btn-primary">Log Fare</button>
+      </form>
     </div>
   </div>
 </div>
