@@ -1,9 +1,0 @@
-{% extends "base.html" %} {% block content %}
-<div class="log-fare">
-  <h2>Log Fare Collection</h2>
-  <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit">Log Fare</button>
-  </form>
-</div>
-{% endblock %}
