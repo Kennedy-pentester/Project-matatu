@@ -126,6 +126,8 @@ def admin_dashboard(request):
     total_touts = Tout.objects.count()
     total_shifts = Shift.objects.count()
 
+    total_fare = Fare.objects.aggregate(total=Sum("amount_collected"))["total"] or 0
+
     #    fecth recent activities
     recent_activities = Activity.objects.order_by("-created_at")[:5]
 
@@ -134,6 +136,7 @@ def admin_dashboard(request):
         "total_drivers": total_drivers,
         "total_touts": total_touts,
         "total_shifts": total_shifts,
+        "total_fare": total_fare,
         "recent_activities": recent_activities,
     }
 
